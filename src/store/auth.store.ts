@@ -1,9 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
-  fullName: string;
-  role: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  DOB: Date | null;
+  maritalStatus: string;
+  gender: string;
+  phoneNumber: string;
+  role: string;
+
   notification: boolean;
   isEmailVerified: boolean;
   isAccountVerified: boolean;

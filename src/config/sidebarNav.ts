@@ -13,7 +13,7 @@ const sidebarNav = [
     text: "Users",
     role: ["admin"],
   },
-  {
+  /*{
     link: "/admin/round-schedule-date",
     section: "round-schedule-date",
     icon: "ph:trophy", //width:"20"
@@ -33,7 +33,7 @@ const sidebarNav = [
     icon: "ph:users-four", //width:"20"
     text: "Teams",
     role: ["admin"],
-  },
+  }, */
 
   // {
   //   link: "/admin/pages",

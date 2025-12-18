@@ -25,7 +25,7 @@ export const logInApi = catchAsync(async (values: LoginData) => {
     const data = await httpsCall.post(`/admin/login`, values);
     return data;
   } catch (error) {
-    throw error; // Re-throw the error to propagate it
+    throw error;
   }
 });
 

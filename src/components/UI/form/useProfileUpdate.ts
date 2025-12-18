@@ -6,14 +6,24 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/auth.store";
 
 interface FormValues {
-  fullName: string;
+  firstName: string;
+  lastName: string;
+  DOB: Date | null;
+  maritalStatus: string;
+  gender: string;
+  phoneNumber: string;
   email: string;
 }
 export const useProfileUpdate = () => {
   const dispatch = useDispatch();
 
   const validationSchema = yup.object({
-    fullName: yup.string().required("Name is required"),
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    DOB: yup.date().required("Birthday is required"),
+    maritalStatus: yup.string().required("Marital Status is required"),
+    gender: yup.string().required("Gender is required"),
+    phoneNumber: yup.string().required("Phone Number is required"),
     email: yup
       .string()
       .email("Please enter a valid email address")
@@ -23,13 +33,23 @@ export const useProfileUpdate = () => {
   // Formik setup
   const addProfileFormik = useFormik<FormValues>({
     initialValues: {
-      fullName: "",
-      email: "",
+      firstName: "",
+      lastName: "",
+      DOB: null,
+      maritalStatus: "",
+      gender: "",
+      phoneNumber: "",
+      email: ""
     },
     validationSchema,
     onSubmit: async (values) => {
       const bodyData = {
-        fullName: values.fullName,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        DOB: values.DOB,
+        maritalStatus: values.maritalStatus,
+        gender: values.gender,
+        phoneNumber: values.phoneNumber,
         email: values.email,
       };
       try {
