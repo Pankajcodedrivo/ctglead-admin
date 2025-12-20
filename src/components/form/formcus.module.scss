@@ -8,7 +8,7 @@
     padding: 20px 15px;
   }
   h2 {
-    color: #fff;
+    color: #000;
     font-size: 32px;
     margin-bottom: 60px;
   }
@@ -43,7 +43,7 @@
   }
   .profileformcol {
     width: 50%;
-    padding: 0px 30px;
+    padding: 0px 15px;
     margin-top: 15px;
 
     label {
@@ -53,13 +53,15 @@
       margin-bottom: 3px;
       display: block;
       padding: 0.3rem;
-      color: #fff;
+      color: var(--color-3d);
+      font-size: 14px;
+      font-weight: 600;
     }
 
     input {
       width: 100%;
       border: 1px solid #c7c7c7;
-      background-color: #fff;
+      background-color: transparent;
       border-radius: 10px;
       box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.05);
       padding: 1rem 1.5rem;

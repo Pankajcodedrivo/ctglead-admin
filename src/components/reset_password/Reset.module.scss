@@ -29,7 +29,7 @@ html {
   box-shadow: $mainBoxShadow;
 
   .logo {
-    width: 200px;
+    width: 120px;
     height: 75px;
     img {
       width: 100%;
@@ -40,11 +40,10 @@ html {
 
   .title {
     // font-size: $fontSizeHeadlineMedium;
-    font-size: 20px;
+    font-size: 22px;
     line-height: normal;
     letter-spacing: 0;
-    color: #ffffff;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 30px !important;
   }
 
@@ -77,12 +76,15 @@ html {
 
   .forgat_pass {
     margin: 1rem 0;
-    display: inline-block;
-    color: #ffffff;
+    display: block;
+    color: var(--color-52);
     font-size: 14px;
-    text-decoration: underline;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover {
+        opacity: 0.6;
+    }
   }
-
   .checkbox {
     @include flex(center, flex-start);
 

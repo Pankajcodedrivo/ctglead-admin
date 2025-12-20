@@ -4,7 +4,7 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 math.div($spacing, 2) * -1;
+  margin: 0 math.div($spacing, 4) * -1;
 
   @include tablet {
     margin: 0 math.div($mobileSpacing, 2) * -1;
@@ -12,7 +12,7 @@
 }
 
 [class*="col-"] {
-  padding: 0 math.div($spacing, 2);
+  padding: 0 math.div($spacing, 4);
 
   @include tablet {
     padding: 0 math.div($mobileSpacing, 2);

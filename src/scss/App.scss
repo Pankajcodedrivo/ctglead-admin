@@ -35,7 +35,7 @@
   border: 0 none !important;
 }
 .sidebar-logo {
-  width: 100%;
+  width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,9 +118,16 @@ html[theme="light"] ._sidebar_13x4y_7 {
 }
 ._sidebar__menu__item_13x4y_77 {
   color: var(--white);
-  border-bottom: solid 1px var(--dark);
-  padding-bottom: 10px;
-  margin-bottom: 10px;
+   padding: 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    border: 0;
+    margin: 0;
+    &.active ,&:hover{
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+        color: var(--white)!important;
+    }
 }
 html[theme="light"] ._sidebar__menu__item_13x4y_77:hover,
 html[theme="light"] ._sidebar__menu__item_13x4y_77._active_13x4y_89 {
@@ -128,9 +135,6 @@ html[theme="light"] ._sidebar__menu__item_13x4y_77._active_13x4y_89 {
 }
 html[theme="dark"] ._sidebar__menu__item_13x4y_77 {
   color: var(--light-white);
-  border-bottom: solid 1px rgb(107 107 107 / 50%);
-  padding-bottom: 10px;
-  margin-bottom: 10px;
 }
 ._topNav_left_menu_icon_1srqq_21 svg {
   width: 40px;
@@ -394,9 +398,12 @@ button.btn.upbtn {
   width: 150px;
   height: 150px;
   object-fit: cover;
-  border: solid 2px #fff;
+  background: #E0EEFF;
   border-radius: 50%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .uploadimage,
 .upbtn {
@@ -429,7 +436,6 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 0 !important;
   box-shadow: 0 0 0 0 !important;
-  border: 0 none !important;
 }
 html[theme="dark"] svg.svg-inline--fa.fa-eye {
   color: #000;
@@ -452,8 +458,15 @@ p.w-100 {
 .support-page .MuiPaper-root {
   overflow-x: inherit;
 }
+// .formadduser {
+//   padding:30px;
+//   margin-bottom: 20px !important;
+//   border-radius: 24px;
+//   background: #fff;
+//   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1019607843);
+// }
 input#email {
-  background: #fff !important;
+  background: transparent !important;
   color: #000 !important;
 }
 input#password_old,
@@ -529,21 +542,19 @@ input#cpassword {
 .upload-setting-logo input[type="text"],
 .upload-setting-logo input[type="datetime-local"] {
   width: 50%;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 10px;
   padding: 1rem 1.5rem;
   color: #000;
-  border: 0 none;
   margin-top: 10px;
   margin-bottom: 20px;
 }
 .upload-setting-logo textarea {
   width: 50%;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 10px;
   padding: 1rem 1.5rem;
   color: #000;
-  border: 0 none;
   margin-top: 10px;
   min-height: 180px;
   margin-bottom: 20px;
@@ -565,7 +576,11 @@ input#cpassword {
   text-transform: capitalize;
 }
 #resetpassword .passwordlabel label {
-  color: #fff !important;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-3d)!important;
+  margin-bottom: 10px;
+  padding: 0;
   text-transform: capitalize;
 }
 input#otp,
@@ -588,7 +603,11 @@ form#forgotPassword .passwordlabel label {
 }
 form#resetpassword .passwordlabel label {
   display: block !important;
-  color: #fff !important;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-3d)!important;
+  margin-bottom: 10px;
+  padding: 0;
   text-transform: capitalize;
 }
 .login-form .passwordlabel input#password {
@@ -780,7 +799,7 @@ ul.profilenavlist {
   padding: 0 !important;
 }
 ul.profilenavlist li:hover {
-  background: linear-gradient(45deg, #ff5722, #ff9800);
+  background: var(--color-blue);
   color: #fff;
 }
 .profilephotonametophdr:hover {
@@ -905,21 +924,24 @@ input.swal2-input {
 
 /*******/
 .settingTab .MuiTab-root {
-  color: #fff !important;
+  color: #000 !important;
+  background-color: transparent !important;
 }
 .settingTab .MuiTab-root.Mui-selected {
-  color: var(--accent) !important;
+  color: var(--color-blue) !important;
 }
 
 .settingTab .MuiTabs-indicator {
-  background-color: var(--accent) !important;
+  background-color: var(--color-blue) !important;
 }
 .settingTabContent label,
 .profile-card label,
 #myprofilewrapper label,
 #editprofile label,
 #updatePage label {
-  color: #fff;
+ color: var(--color-3d);
+  font-size: 14px;
+  font-weight: 600;
 }
 .search-wrap {
   display: flex;
@@ -936,7 +958,7 @@ input.swal2-input {
 .formgrp input {
   width: 100%;
   border: 1px solid #c7c7c7;
-  background-color: #fff !important;
+  background-color: transparent !important;
   border-radius: 10px;
   box-shadow: none !important;
   // min-width: 300px;
@@ -961,6 +983,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 
 @media only screen and (max-width: 1440px) {
   body {
@@ -1080,4 +1103,3 @@ input[type="number"] {
   border: 1px solid #a0a0a0;  
   cursor: not-allowed;        
 }
-

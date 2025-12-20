@@ -37,18 +37,16 @@
   box-shadow: $mainBoxShadow;
 
   .logo {
-    margin-top: -2rem;
-    width: 200px;
+    width: 120px;
     height: 80px;
   }
 
   .title {
     // font-size: $fontSizeHeadlineMedium;
-    font-size: 20px;
+    font-size: 22px;
     line-height: normal;
     letter-spacing: 0;
-    color: #ffffff;
-    font-weight: 400;
+    font-weight: 600;
     margin-bottom: 30px !important;
   }
   & input {
@@ -80,9 +78,13 @@
   .forgat_pass {
     margin: 1rem 0;
     display: block;
-    color: #fff;
+    color: var(--color-52);
     font-size: 14px;
-    text-decoration: underline;
+    font-weight: 600;
+    text-decoration: none;
+    &:hover {
+        opacity: 0.6;
+    }
   }
 
   .checkbox {

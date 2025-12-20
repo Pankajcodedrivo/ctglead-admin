@@ -22,7 +22,7 @@ const FormCus = () => {
       addProfileFormik.setValues({
         firstName: user.firstName || "",
         lastName: user.lastName || "",
-        DOB: user.DOB,   
+        DOB: user.DOB,
         maritalStatus: user.maritalStatus || "",
         gender: user.gender || "",
         phoneNumber: user.phoneNumber || "",
@@ -62,9 +62,9 @@ const FormCus = () => {
     <div id='editprofile' className={`${form.myprofilewrapper} dashboard-card-global edit-profile-wrap`}>
       <div className='profile-card profileform'>
         <div className="dashboard-card-title">
-          <h2>Update Profile</h2> 
+          <h2>Update Profile</h2>
         </div>
-        
+
         <div className='profile-picture-upload'>
           <div className='uploadimage'>
             <div className='upimg'>
@@ -155,92 +155,90 @@ const FormCus = () => {
                   )}
               </div>
             </div>
-          </div>
-
-          {/* DOB */}
-          <div className={form.profileformcol}>
-            <div className="formgrp">
-              <label  htmlFor='dob'>
-                Date of Birth <span style={{ color: "red" }}>*</span>
-              </label>
-              <Input
-                classes={`passwordlabel`}
-                type="date"
-                name="DOB"
-                id='DOB'
-                value={
-                  addProfileFormik.values.DOB
-                    ? new Date(addProfileFormik.values.DOB)
+            {/* DOB */}
+            <div className={form.profileformcol}>
+              <div className="formgrp">
+                <label htmlFor='dob'>
+                  Date of Birth <span style={{ color: "red" }}>*</span>
+                </label>
+                <Input
+                  classes={`passwordlabel`}
+                  type="date"
+                  name="DOB"
+                  id='DOB'
+                  value={
+                    addProfileFormik.values.DOB
+                      ? new Date(addProfileFormik.values.DOB)
                         .toISOString()
                         .split("T")[0]
-                    : ""
-                }
-                onChange={(e) =>
-                  addProfileFormik.setFieldValue(
-                    "DOB",
-                    e.target.value ? new Date(e.target.value) : null
-                  )
-                }
-              />
+                      : ""
+                  }
+                  onChange={(e) =>
+                    addProfileFormik.setFieldValue(
+                      "DOB",
+                      e.target.value ? new Date(e.target.value) : null
+                    )
+                  }
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Marital Status */}
-          <div className={form.profileformcol}>
-            <div className="formgrp">
-              <label  htmlFor='maritial'>
-                Marital Status<span style={{ color: "red" }}>*</span>
-              </label>
-              <select
-                name="maritalStatus"
-                value={addProfileFormik.values.maritalStatus}
-                onChange={addProfileFormik.handleChange}
-              >
-                <option value="">Select</option>
-                <option value="single">Single</option>
-                <option value="married">Married</option>
-                <option value="divorced">Divorced</option>
-                <option value="widowed">Widowed</option>
-              </select>
+            {/* Marital Status */}
+            <div className={form.profileformcol}>
+              <div className="formgrp">
+                <label htmlFor='maritial'>
+                  Marital Status<span style={{ color: "red" }}>*</span>
+                </label>
+                <select
+                  name="maritalStatus"
+                  value={addProfileFormik.values.maritalStatus}
+                  onChange={addProfileFormik.handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                  <option value="divorced">Divorced</option>
+                  <option value="widowed">Widowed</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          {/* Gender */}
-          <div className={form.profileformcol}>
-            <div className="formgrp">
-              <label  htmlFor='gender'>
-                Gender<span style={{ color: "red" }}>*</span>
-              </label>
-              <select
-                name="gender"
-                value={addProfileFormik.values.gender}
-                onChange={addProfileFormik.handleChange}
-              >
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
+            {/* Gender */}
+            <div className={form.profileformcol}>
+              <div className="formgrp">
+                <label htmlFor='gender'>
+                  Gender<span style={{ color: "red" }}>*</span>
+                </label>
+                <select
+                  name="gender"
+                  value={addProfileFormik.values.gender}
+                  onChange={addProfileFormik.handleChange}
+                >
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          {/* Phone Number */}
-          <div className={form.profileformcol}>
-            <div className="formgrp">
-              <label  htmlFor='phone'>
-                Phone Number<span style={{ color: "red" }}>*</span>
-              </label>
-              <Input
-                type="text"
-                name="phoneNumber"
-                id="phoneNumber"
-                placeholder="Enter phone number"
-                onChange={addProfileFormik.handleChange}
-                value={addProfileFormik.values.phoneNumber}
-              />
+            {/* Phone Number */}
+            <div className={form.profileformcol}>
+              <div className="formgrp">
+                <label htmlFor='phone'>
+                  Phone Number<span style={{ color: "red" }}>*</span>
+                </label>
+                <Input
+                  type="text"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  placeholder="Enter phone number"
+                  onChange={addProfileFormik.handleChange}
+                  value={addProfileFormik.values.phoneNumber}
+                />
+              </div>
             </div>
-          </div>
 
+          </div>
           <button className="custom-button mt-20">Save</button>
         </form>
       </div>

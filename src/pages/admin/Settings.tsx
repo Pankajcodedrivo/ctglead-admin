@@ -299,16 +299,6 @@ function Settings() {
                         onSubmit={handleSaveSettings}
                         className='upload-setting-logo'
                       >
-                        <label>Bottom Copyright</label>
-                        <div className='formgrp'>
-                          <input
-                            type='text'
-                            placeholder='Copyright text'
-                            value={copyright}
-                            onChange={(e) => setCopyright(e.target.value)}
-                            className="form-control"
-                          />
-                        </div>
                         <label>Admin Email</label>
                         <div className='formgrp'>
                           <input
