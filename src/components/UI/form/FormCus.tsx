@@ -228,7 +228,8 @@ const FormCus = () => {
                   Phone Number<span style={{ color: "red" }}>*</span>
                 </label>
                 <Input
-                  type="text"
+                  classes='passwordlabel'
+                  type={"text"}
                   name="phoneNumber"
                   id="phoneNumber"
                   placeholder="Enter phone number"
