@@ -4,7 +4,6 @@ import form from "./formcus.module.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { useProfileUpdate } from "./useProfileUpdate";
-import Select from "react-select";
 import Avatar from "../../../../src/assets/images/avatar.jpg";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/auth.store";
@@ -208,7 +207,7 @@ const FormCus = () => {
                 <label htmlFor='gender'>
                   Gender<span style={{ color: "red" }}>*</span>
                 </label>
-                <select
+                <select className="passwordlabel"
                   name="gender"
                   value={addProfileFormik.values.gender}
                   onChange={addProfileFormik.handleChange}
@@ -236,6 +235,12 @@ const FormCus = () => {
                   onChange={addProfileFormik.handleChange}
                   value={addProfileFormik.values.phoneNumber}
                 />
+                {addProfileFormik.touched.phoneNumber &&
+                  addProfileFormik.errors.phoneNumber && (
+                    <div className='error'>
+                      {addProfileFormik.errors.phoneNumber}
+                    </div>
+                  )}
               </div>
             </div>
 

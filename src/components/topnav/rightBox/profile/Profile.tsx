@@ -98,7 +98,7 @@ function Profile() {
             <img src={user?.profileimageurl || images.noimage} alt='avatar' />
           </div>
           <div className={`${classes.profile__info} profilename`}>
-            <p className={classes.profile__userName}>{user?.fullName}</p>
+            <p className={classes.profile__userName}>{user?.firstName}</p>
           </div>
         </Button>
         <Popper
