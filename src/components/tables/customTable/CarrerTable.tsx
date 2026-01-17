@@ -1,40 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Link ,useLocation} from "react-router-dom";
-import { Itable, complex, ITeamsTable } from "../../../interfaces/Itable";
+import { Itable, complex, ICarrerTable } from "../../../interfaces/Itable";
 import noImage from "../../../assets/images/dummy.jpg";
 import {Table,TableBody,TableCell,TableContainer,TableHead, TableRow,Paper,Button,Dialog,DialogActions,DialogContent,
         DialogContentText,DialogTitle,Stack,Pagination,} from "@mui/material";
 import dataTable from "./datatable.module.scss";
-import { teamsApi, deleteTeam,resetAuctionApi } from "../../../service/apis/team.api";
+import { careerApi, deleteCareer } from "../../../service/apis/carrer.api";
 
-import { faEye, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 import del from "../../../assets/images/ic_outline-delete.png";
 import delt from "../../../assets/images/delete.png";
-import bid from "../../../assets/images/bid.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LoadingSpinner from "../../../components/UI/loadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
 
-const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
+const CarrerTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(location.state?.fromPage || 1);
-  const [sortOrderData, setSortOrderData] = useState<complex[]>(bodyData);
+  const [sortOrderData, setSortOrderData] = useState<complex[]>(
+    Array.isArray(bodyData) ? bodyData : []
+  );
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [totalResult, setTotalResult] = useState(totalData);
   const [loading, setLoading] = useState(false);
   const [addClass, setAddClass] = useState<string>("");
-  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [selectedCareerId, setSelectedCareerId] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [resetModel, setResetModel] = useState(false);
 
   const rowsPerPage = 10;
 
   const handleClickOpen = (id: string) => {
-    setSelectedTeamId(id);
+    setSelectedCareerId(id);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const handleResetAuctionClose = () => setResetModel(false);
 
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value;
@@ -49,11 +48,11 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         search: searchQuery,
       };
       setLoading(true);
-      const response = await teamsApi(bodyData);
+      const response = await careerApi(bodyData);
       if (response) {
         setLoading(false);
         setTotalResult(response?.totalResults);
-        setSortOrderData(response?.Teams);
+        setSortOrderData(Array.isArray(response?.Careers) ? response.Careers : []);
         setAddClass("");
       }
     } catch (err) {
@@ -68,9 +67,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         limit: rowsPerPage,
         search: searchTerm,
       };
-      const response = await teamsApi(bodyData);
+      const response = await careerApi(bodyData);
       if (response) {
-        setSortOrderData(response?.Teams);
+        setSortOrderData(Array.isArray(response?.Careers) ? response.Careers : []);
       }
     } catch (err) {
       console.error("Failed to fetch data", err);
@@ -88,9 +87,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         search: "",
       };
       setLoading(true);
-      const response = await teamsApi(bodyData);
+      const response = await careerApi(bodyData);
       if (response) {
-        setSortOrderData(response?.Teams);
+       setSortOrderData(Array.isArray(response?.Careers) ? response.Careers : []);
         setTotalResult(response?.totalResults);
         setLoading(false);
         setAddClass("");
@@ -114,9 +113,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         limit: rowsPerPage,
         search: searchTerm,
       };
-      const response = await teamsApi(bodyData);
+      const response = await careerApi(bodyData);
       if (response) {
-        setSortOrderData(response?.Teams);
+        setSortOrderData(Array.isArray(response?.Careers) ? response.Careers : []);
         setLoading(false);
         setAddClass("");
       }
@@ -139,7 +138,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
 
   const handleDelete = async () => {
     try {
-      const response = await deleteTeam(selectedTeamId);
+      const response = await deleteCareer(selectedCareerId);
       if (response.status === 200) {
         toast.success(response.message);
         try {
@@ -147,12 +146,10 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             currentPage: 1,
             limit: rowsPerPage,
           };
-          const response = await teamsApi(bodyData);
+          const response = await careerApi(bodyData);
           if (response) {
-            setSortOrderData(response?.Teams);
+            setSortOrderData(Array.isArray(response?.Careers) ? response.Careers : []);
             setTotalResult(response?.totalResults)
-            // setLoading(false);
-            // setAddClass("");
           }
         } catch (err) {
           console.error("Failed to fetch data", err);
@@ -162,36 +159,9 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
         }
       }
     } catch (error) {
-      console.error("Error deleting team:", error);
+      console.error("Error deleting career:", error);
     }
     setOpen(false);
-  };
-
-  const resetTeamAuction = async () => {
-    setResetModel(false);
-    setLoading(true);
-    try {
-      setAddClass("add_blur");
-      const response = await resetAuctionApi();
-      if (response.status === 200) {
-        toast.success(response.message||"Auction has been reset successfully.");
-        const bodyData = {
-          currentPage: 1,
-          limit: rowsPerPage,
-        };
-        const fetchResponse = await teamsApi(bodyData);
-        if (fetchResponse) {
-          setSortOrderData(fetchResponse?.Teams);
-          setTotalResult(fetchResponse?.totalResults);
-          // setLoading(false);
-          setAddClass("");
-        }
-      } 
-    } catch (error) {
-      toast.error("An error occurred while resetting the auction.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -205,8 +175,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
       >
         <div className='search-wrap'>
           <div className="button-holder-wrap">
-            <Link to='/admin/teams/add'> <button className="custom-button" > Add Team </button> </Link>
-            <button onClick={() => setResetModel(true)} className="custom-button" style={{marginLeft:15}}> Reset Auction </button>
+            <Link to='/admin/career/add'> <button className="custom-button" > Add Career </button> </Link>
           </div>
           <div
             className='searchwrap'
@@ -276,8 +245,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
               </TableHead>
 
               <TableBody className={dataTable.tbodywrap}>
-                {(sortOrderData as ITeamsTable[]).map((row: ITeamsTable) => {
-                 // console.log(row);
+                {(sortOrderData as ICarrerTable[]).map((row: ICarrerTable) => {
                   return (
                     <TableRow
                       key={row._id}
@@ -287,8 +255,8 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                     >
                       <TableCell align='left'>
                         <img
-                          src={row?.teamLogo || noImage}
-                          alt='Team Logo'
+                          src={row?.careerLogo || noImage}
+                          alt='Career Logo'
                           style={{
                             width: 50,
                             height: 50,
@@ -301,13 +269,12 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                         component='th'
                         scope='row'
                       >
-                        {row?.teamName}
+                        {row?.careerName}
                       </TableCell>
-                      <TableCell align='left'>{row?.location}</TableCell>
-                      <TableCell align='left'>{row?.status || "NA"}</TableCell>
+                
                       <TableCell align='left'>
                         <div className={dataTable.actionwrap}>
-                          <Link to={`/admin/teams/${row._id}`}state={{ fromPage: currentPage }}>
+                          <Link to={`/admin/career/${row._id}`}state={{ fromPage: currentPage }}>
                             <p className={dataTable.edit}>
                               <FontAwesomeIcon
                                 icon={faPen}
@@ -408,7 +375,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
             fontWeight: "700",
           }}
         >
-          {"Delete Team"}
+          {"Delete Career"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText
@@ -431,68 +398,7 @@ const TeamsTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
           </Button>
         </DialogActions>
       </Dialog>
-
-      <Dialog
-      sx={{
-        "& .MuiPaper-root": {
-          borderRadius: "35px",
-          overflowY: "inherit",
-          padding: "40px",
-          maxWidth: "562px",
-        },
-      }}
-      maxWidth="md"
-      fullWidth
-      open={resetModel}
-      onClose={handleResetAuctionClose}
-      className={dataTable.custommodal}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <div className={dataTable.modalimg}>
-        <img src={bid} alt="Auction Reset Confirmation" />
-      </div>
-      <DialogTitle
-        id="alert-dialog-title"
-        style={{
-          textAlign: "center",
-          fontSize: "32px",
-          color: "#000",
-          fontWeight: "700",
-        }}
-      >
-        {"Reset Auction"}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          id="alert-dialog-description"
-          style={{
-            textAlign: "center",
-            color: "#676767",
-            fontSize: "16px",
-          }}
-        >
-          {"Are you sure you want to reset the auction?"}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions style={{ justifyContent: "center", gap: "15px" }}>
-        <Button onClick={handleResetAuctionClose} className="btn-cancel">
-          {"Cancel"}
-        </Button>
-        <Button
-          onClick={async () => {
-            await resetTeamAuction();
-            handleResetAuctionClose();
-          }}
-          className="btn"
-        >
-          {"Reset"}
-        </Button>
-      </DialogActions>
-    </Dialog>
-
     </div>
   );
 };
-
-export default TeamsTable;
+export default CarrerTable;

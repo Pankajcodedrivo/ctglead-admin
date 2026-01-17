@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import { Itable, complex, IUsersRoleTable } from "../../../interfaces/Itable";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,7 @@ import Stack from "@mui/material/Stack";
 import dataTable from "./datatable.module.scss";
 import del from "../../../assets/images/ic_outline-delete.png";
 import delt from "../../../assets/images/delete.png";
-import { userApi, deleteUser, addAmount } from "../../../service/apis/user.api";
+import { userApi, deleteUser } from "../../../service/apis/user.api";
 
 import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import { faCircleDollarToSlot } from "@fortawesome/free-solid-svg-icons";
@@ -199,38 +199,6 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
       .join(" ");
   };
 
-  const handleSubmit = async () => {
-    if (amount && selectedUserId) {
-      try {
-        const numericAmount = Number(amount);
-        const bodyData = {
-          amount: numericAmount,
-        };
-        const response = await addAmount(selectedUserId, bodyData);
-        if (response?.status === 200) {
-          toast.success(response.message);
-          setOpenDialog(false);
-          setAmount("");
-
-          const refreshData = {
-            currentPage: currentPage,
-            limit: rowsPerPage,
-            search: searchTerm,
-          };
-          const refreshResponse = await userApi(refreshData);
-          if (refreshResponse?.status === 200) {
-            setSortOrderData(refreshResponse?.users?.users);
-            setTotalResult(refreshResponse?.users?.totalResults);
-          }
-        }
-      } catch (error) {
-        console.error("Error adding money:", error);
-      }
-    } else {
-      console.error("Please provide a valid amount and user ID.");
-    }
-  };
-
   return (
     <div style={{ position: "relative" }} className='dsp'>
       {loading ? (
@@ -324,7 +292,11 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
-                        <TableCell align='left'>
+                        <TableCell
+                          className={dataTable.productwrp}
+                          component='th'
+                          scope='row'
+                          >
                           <img
                             src={row?.profileimageurl || noImage}
                             alt='User'
@@ -334,20 +306,11 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                               borderRadius: "50%",
                             }}
                           />
-                        </TableCell>
-                        <TableCell
-                          className={dataTable.productwrp}
-                          component='th'
-                          scope='row'
-                        >
-                          {row?.fullName}
+                          {row?.firstName} {row?.lastName}
                         </TableCell>
                         <TableCell align='left'>{row?.email}</TableCell>
-                        <TableCell align='left'>
-                          {row?.amount || row.amount === 0
-                            ? `$${row.amount}`
-                            : "NA"}
-                        </TableCell>
+                        <TableCell align='left'>{row?.phoneNumber || 'NA'}</TableCell>
+                        <TableCell align='left'>{row?.role}</TableCell>
                         <TableCell align='left'>
                           <div className={dataTable.actionwrap}>
                             <Link to={`/admin/users/update-user/${row.id}`}state={{ fromPage: currentPage }}>
@@ -364,22 +327,6 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
                                 />
                               </p>
                             </Link>
-                            <p
-                              className={dataTable.edit}
-                              onClick={() => handleOpenDialog(row.id)}
-                            >
-                              <FontAwesomeIcon
-                                icon={faCircleDollarToSlot}
-                                style={{
-                                  color: "#fff",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  fontSize: "20px",
-                                }}
-                              />
-                            </p>
-
                             <p
                               className={dataTable.delete}
                               onClick={() => handleClickOpen(row.id)}
@@ -489,57 +436,6 @@ const CustomTable: React.FC<Itable> = ({ bodyData, headData, totalData }) => {
           </Button>
           <Button onClick={handleDelete} className='btn'>
             {t("Delete")}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Dialog Box for Adding Amount */}
-      <Dialog
-        sx={{
-          "& .MuiPaper-root": {
-            borderRadius: "35px",
-            overflowY: "inherit",
-            padding: "40px",
-            maxWidth: "562px",
-          },
-        }}
-        maxWidth='md'
-        fullWidth
-        className={dataTable.custommodal}
-        open={openDialog}
-        onClose={handleCloseDialog}
-      >
-        <DialogTitle
-          style={{
-            textAlign: "center",
-            fontSize: "32px",
-            color: "#ff8400",
-            fontWeight: "700",
-          }}
-        >
-          Add Amount
-        </DialogTitle>
-        <DialogContent>
-          <Input
-            autoFocus
-            fullWidth
-            type='number'
-            value={amount}
-            onChange={(e: any) => setAmount(e.target.value)}
-            inputProps={{ min: 0 }}
-            startAdornment={<InputAdornment position='start'>$</InputAdornment>}
-          />
-        </DialogContent>
-        <DialogActions style={{ justifyContent: "center" }}>
-          <Button
-            onClick={handleCloseDialog}
-            color='primary'
-            className='btn-cancel'
-          >
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color='primary' className='btn'>
-            Add
           </Button>
         </DialogActions>
       </Dialog>

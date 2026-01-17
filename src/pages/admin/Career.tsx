@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import TeamsTable from "../../components/tables/customTable/TeamsTable";
+import CarrerTable from "../../components/tables/customTable/CarrerTable";
 import LoadingSpinner from "../../components/UI/loadingSpinner/LoadingSpinner";
-import { ITeamsTable } from "../../interfaces/Itable";
-import { teamsHeader } from "../../constants/tables";
-import { teamsApi } from "../../service/apis/team.api";
+import { ICarrerTable } from "../../interfaces/Itable";
+import { carrerHeader } from "../../constants/tables";
+import { careerApi } from "../../service/apis/carrer.api";
 import withRole from "../withRole";
 import { useLocation } from "react-router-dom";
 
-function Teams() {
-  const [data, setData] = useState<ITeamsTable[]>([]);
+function Career() {
+  const [data, setData] = useState<ICarrerTable[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalUser, setTotalUser] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>(0);
@@ -16,17 +16,16 @@ function Teams() {
 
   const limit = 10;
   const location = useLocation();
-  const getTeams = async () => {
+  const getCarrer = async () => {
     setLoading(true);
-
     try {
       const bodyData = {
-        currentPage: location.state?.fromPage||1,
+        currentPage: location.state?.fromPage || 1,
         limit: limit,
       };
-      const response = await teamsApi(bodyData);
+      const response = await careerApi(bodyData);
       if (response) {
-        setData(response?.Teams);
+        setData(response?.Careers);
         setTotalUser(response?.totalResults);
         setTotalPage(response?.totalPages);
         setCurrentPage(response?.page);
@@ -40,7 +39,7 @@ function Teams() {
   };
 
   useEffect(() => {
-    getTeams();
+    getCarrer();
   }, []);
 
   return (
@@ -48,10 +47,10 @@ function Teams() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <TeamsTable
+        <CarrerTable
           limit={limit}
-          headData={teamsHeader}
-          bodyData={data as ITeamsTable[]}
+          headData={carrerHeader}
+          bodyData={data as ICarrerTable[]}
           totalData={totalUser}
           totalPage={totalPage}
           dataCurrentPage={currentPage}
@@ -60,5 +59,4 @@ function Teams() {
     </section>
   );
 }
-
-export default withRole(Teams, ["admin"]);
+export default withRole(Career, ["admin"]);

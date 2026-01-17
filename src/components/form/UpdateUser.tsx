@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { useParams,useLocation } from "react-router-dom";
 import { userDetails } from "../../service/apis/user.api";
+import { CareerList } from "../../service/apis/carrer.api";
 
 const UpdateUser = () => {
   const params = useParams();
@@ -16,10 +17,26 @@ const UpdateUser = () => {
   const { addUserFormik, loading } = useAddUser(id);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [careerList, setCareerList] = useState<any[]>([]);
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
   };
+
+  useEffect(() => {
+    const fetchCData = async () => {
+      const careerData = await CareerList();
+        setCareerList(careerData || []);
+    };
+    fetchCData();
+  }, []);
+
+  useEffect(() => {
+  if (addUserFormik.values.role !== "agency") {
+    addUserFormik.setFieldValue("careerId", "");
+  }
+}, [addUserFormik.values.role]);
+
 
   useEffect(() => {
     if (id) {
@@ -27,12 +44,20 @@ const UpdateUser = () => {
         try {
           const userData = await userDetails(id);
           if (userData.status === 200) {
-            //console.log(userData);
             addUserFormik.setValues({
-              fullName: userData.userData?.fullName || "",
-              email: userData.userData?.email || "",
-              profileImage: userData.userData?.profileimageurl || "",
-              password: "",
+                firstName: userData.userData?.firstName || "",
+                lastName: userData.userData?.lastName || "",
+                email: userData.userData?.email || "",
+                profileImage: userData.userData?.profileimageurl || "",
+                DOB: userData.userData?.DOB
+                ? userData.userData.DOB.split("T")[0]
+                : "",
+                maritalStatus: userData.userData?.maritalStatus || "",
+                gender: userData.userData?.gender || "",
+                phoneNumber: userData.userData?.phoneNumber || "",
+                role: userData.userData?.role || "",
+                password: "",
+                careerId: userData.userData?.careerId || "",
             });
             setImagePreview(userData.userData?.profileimageurl || "");
           }
@@ -78,20 +103,41 @@ const UpdateUser = () => {
             <div className={form.profileformcol}>
               <div className='formgrp'>
                 <label htmlFor='Name'>
-                  Full Name <span style={{ color: "red" }}>*</span>
+                  First Name <span style={{ color: "red" }}>*</span>
                 </label>
                 <Input
                   classes='passwordlabel'
                   type={"text"}
-                  id='fullName'
-                  placeholder={"Enter your full name"}
-                  name='fullName'
+                  id='firstName'
+                  placeholder={"Enter your first name"}
+                  name='firstName'
                   onChange={addUserFormik.handleChange}
-                  value={addUserFormik.values.fullName}
+                  value={addUserFormik.values.firstName}
                 />
-                {addUserFormik.touched.fullName &&
-                  addUserFormik.errors.fullName && (
-                    <div className='error'>{addUserFormik.errors.fullName}</div>
+                {addUserFormik.touched.firstName &&
+                  addUserFormik.errors.firstName && (
+                    <div className='error'>{addUserFormik.errors.firstName}</div>
+                  )}
+              </div>
+            </div>
+
+            <div className={form.profileformcol}>
+              <div className='formgrp'>
+                <label htmlFor='Name'>
+                  Last Name <span style={{ color: "red" }}>*</span>
+                </label>
+                <Input
+                  classes='passwordlabel'
+                  type={"text"}
+                  id='lastName'
+                  placeholder={"Enter your last name"}
+                  name='lastName'
+                  onChange={addUserFormik.handleChange}
+                  value={addUserFormik.values.lastName}
+                />
+                {addUserFormik.touched.lastName &&
+                  addUserFormik.errors.lastName && (
+                    <div className='error'>{addUserFormik.errors.lastName}</div>
                   )}
               </div>
             </div>
@@ -127,7 +173,138 @@ const UpdateUser = () => {
               </div>
             </div>
 
-            {id === undefined && (
+            <div className={form.profileformcol}>
+            <div className='formgrp'>
+               <label htmlFor='Phone Number'>
+                  Phone Number <span style={{ color: "red" }}>*</span>
+                </label>
+              <Input
+                classes='passwordlabel'
+                type={"text"}
+                name="phoneNumber"
+                id='phoneNumber'
+                placeholder="Enter phone number"
+                onChange={addUserFormik.handleChange}
+                value={addUserFormik.values.phoneNumber}
+              />
+              {addUserFormik.touched.phoneNumber &&
+                addUserFormik.errors.phoneNumber && (
+                  <div className="error">{addUserFormik.errors.phoneNumber}</div>
+                )}
+            </div>
+          </div>
+
+          <div className={form.profileformcol}>
+          <div className='formgrp'>
+            <label htmlFor='dob'>
+              DOB <span style={{ color: "red" }}>*</span>
+            </label>
+            <Input
+              classes='passwordlabel'
+              type="date"
+              name="DOB"
+              id="DOB"
+              onChange={addUserFormik.handleChange}
+              value={addUserFormik.values.DOB}
+            />
+            {addUserFormik.touched.DOB && addUserFormik.errors.DOB && (
+              <div className="error">{addUserFormik.errors.DOB}</div>
+            )}
+          </div>
+          </div>
+
+          <div className={form.profileformcol}>
+          <div className='formgrp'>
+            <label>Gender <span style={{ color: "red" }}>*</span></label>
+            <select
+              name="gender"
+              value={addUserFormik.values.gender}
+              onChange={addUserFormik.handleChange}
+            >
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            {addUserFormik.touched.gender && addUserFormik.errors.gender && (
+              <div className="error">{addUserFormik.errors.gender}</div>
+            )}
+          </div>
+        </div>
+
+        <div className={form.profileformcol}>
+          <div className='formgrp'>
+            <label>Marital Status <span style={{ color: "red" }}>*</span></label>
+            <select
+              name="maritalStatus"
+              value={addUserFormik.values.maritalStatus}
+              onChange={addUserFormik.handleChange}
+            >
+              <option value="">Select</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="domestic Partnership">Domestic Partnership</option>
+              <option value="civil Union">Civil Union</option>
+              <option value="divorced">Divorced</option>
+              <option value="widowed">Widowed</option>
+              <option value="separated">Separated</option>
+            </select>
+            {addUserFormik.touched.maritalStatus && addUserFormik.errors.maritalStatus && (
+              <div className="error">{addUserFormik.errors.maritalStatus}</div>
+            )}
+          </div>
+        </div>
+
+        <div className={form.profileformcol}>
+          <div className='formgrp'>
+            <label>
+              Role <span style={{ color: "red" }}>*</span>
+            </label>
+            <select
+              name="role"
+              value={addUserFormik.values.role}
+              onChange={addUserFormik.handleChange}
+            >
+            <option value="">Select</option>
+              <option value="agency">Agency</option>
+              <option value="admin">Admin</option>
+            </select>
+            {addUserFormik.touched.role && addUserFormik.errors.role && (
+              <div className="error">{addUserFormik.errors.role}</div>
+            )}
+          </div>
+        </div>
+
+        {addUserFormik.values.role === "agency" && (
+        <div className={form.profileformcol}>
+          <div className="formgrp">
+            <label>
+              Career <span style={{ color: "red" }}>*</span>
+            </label>
+            <select
+              name="careerId"
+              value={addUserFormik.values.careerId}
+              onChange={addUserFormik.handleChange}
+            >
+              <option value="">Select Insurance Career</option>
+              {careerList.map((career) => (
+                <option key={career._id} value={career._id}>
+                  {career.careerName}
+                </option>
+              ))}
+            </select>
+
+            {addUserFormik.touched.careerId &&
+              addUserFormik.errors.careerId && (
+                <div className="error">
+                  {addUserFormik.errors.careerId}
+                </div>
+              )}
+          </div>
+        </div>
+      )}
+
+
+          {id === undefined && (
               <div className={form.profileformcol}>
                 <div className='formgrp'>
                   <label htmlFor='password'>

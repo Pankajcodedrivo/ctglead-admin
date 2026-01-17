@@ -6,10 +6,17 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 interface FormValues {
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phoneNumber: string;
+  DOB: string;
   password?: string;
   profileImage: string | null;
+  maritalStatus: string;
+  gender: string;
+  role: string;
+  careerId: string;
 }
 export const useAddUser = (id?: string) => {
   const navigate = useNavigate();
@@ -17,35 +24,59 @@ export const useAddUser = (id?: string) => {
 
   // Form validation schema
   const validationSchema = yup.object({
-    fullName: yup.string().required("Name is required"),
-    email: yup
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    email: yup.string().email().required("Email is required"),
+    phoneNumber: yup
       .string()
-      .email("Please enter a valid email address")
-      .required("Email address is required"),
+      .matches(/^[0-9]{10}$/, "Enter valid 10-digit phone number")
+      .required("Phone number is required"),
+    DOB: yup.string().required("Date of birth is required"),
+    gender: yup.string().required("Gender is required"),
+    maritalStatus: yup.string().required("Marital status is required"),
+    role: yup.string().required("Role is required"),
+    careerId: yup.string().when("role", {
+      is: "agency",
+      then: (schema) => schema.required("Career is required"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
     password: id
-      ? yup.string().optional()
-      : yup
-          .string()
-          .trim()
-          .min(8, "Must be 8 or more characters")
-          .required("Password field is required")
-          .matches(/\w/, "Please enter a valid password"),
+    ? yup.string().notRequired()
+    : yup.string()
+        .required("Password is required")
+        .min(8, "Password must be at least 8 characters"),
   });
 
   // Formik setup
   const addUserFormik = useFormik<FormValues>({
     initialValues: {
-      fullName: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       profileImage: null,
+      DOB: "",
+      maritalStatus: "",
+      gender: "",
+      phoneNumber: "",
+      role: "",
+      careerId: ""
     },
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       console.log(values.profileImage);
       setLoading(true);
       const formData = new FormData();
-      formData.append("fullName", values.fullName);
+      formData.append("firstName", values.firstName);
+      formData.append("lastName", values.lastName);
+      formData.append("phoneNumber", values.phoneNumber);
+      formData.append("DOB", values.DOB);
+      formData.append("maritalStatus", values.maritalStatus);
+      formData.append("gender", values.gender);
+      formData.append("role", values.role);
+      if (values.role === "agency") {
+        formData.append("careerId", values.careerId);
+      }
       if (values.profileImage) {
         formData.append("profileimageurl", values.profileImage);
       }

@@ -46,12 +46,3 @@ export const updateProfileImage = catchAsync(async (values) => {
   const data = await httpsCall.patch(`/admin/profile/image-update`, values);
   return data;
 });
-
-export const addAmount = catchAsync(async (selectedUserId, values: any) => {
-  console.log(values);
-  const data = await httpsCall.patch(
-    `/admin/user-management/add-amount/${selectedUserId}`,
-    values
-  );
-  return data;
-});

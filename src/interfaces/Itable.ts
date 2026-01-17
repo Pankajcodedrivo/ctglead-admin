@@ -1,24 +1,31 @@
 export interface IUsersRoleTable {
   id: string;
-  fullName: string | null;
+  firstName: string | null;
+  lastName: string | null;
   email: string;
-  about: any;
-  introImages: any;
+  phoneNumber: any;
   profileimageurl: string;
   role: string | null;
-  isVerfied: any;
-  isActive: any;
+  DOB: any;
+  maritalStatus: string;
+  gender: string;
   createdAt: string;
   status: string;
-  isSetupDone: any;
-  notification: any;
-  verification: any;
-  socialLinks: any;
-  privatemedia: any;
+  address: string;
+  emailNotification: any;
+  textNotification: any;
+  communicationPref: any;
+  emailVerified: any;
   _id?: string;
-  amount?: any;
+  pushNotification: any;
 }
-export type ITeamsTable = any;
+
+export interface ICarrerTable {
+  _id: string;
+  careerName: string;
+  careerLogo?: string;
+}
+
 export interface IUserID {
   email: string;
   fullName: string | null;
@@ -52,7 +59,7 @@ export interface IRoundScheduleTable {
   roundorder: number,
 }
 
-export type complex = IUsersRoleTable | IFaqTable | ITeamsTable|IMatchTable|IRoundScheduleTable;
+export type complex = IUsersRoleTable | IFaqTable | ICarrerTable | IMatchTable | IRoundScheduleTable;
 
 export interface Itable {
   limit?: number;
